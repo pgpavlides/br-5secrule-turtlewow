@@ -131,8 +131,10 @@ function br_5secrule:UpdateFSRSpark()
         local progress = elapsed / self.mp5Delay
         
         -- Debug: Print timing info (enable for testing)
-        if math.floor(elapsed * 2) % 2 == 0 then  -- Every 0.5 seconds
-            DEFAULT_CHAT_FRAME:AddMessage(string.format("FSR: %.1fs/%.1fs elapsed, %.0f%% progress", elapsed, self.mp5Delay, progress * 100))
+        if math.floor(elapsed * 2) == math.floor(elapsed * 2) then  -- Every frame for now
+            if elapsed > 0 and math.mod(math.floor(elapsed * 10), 5) == 0 then  -- Every 0.5 seconds
+                DEFAULT_CHAT_FRAME:AddMessage("FSR: " .. string.format("%.1f", elapsed) .. "s/" .. string.format("%.1f", self.mp5Delay) .. "s elapsed, " .. string.format("%.0f", progress * 100) .. "% progress")
+            end
         end
         
         -- Ensure progress stays between 0 and 1
