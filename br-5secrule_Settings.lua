@@ -2,14 +2,14 @@ br_5secrule_Defaults = {
     manaLossColor = "800080",
     manaGainColor = "80A6FF",
     showText = true,
-    locked = true,
-    scale = 1.0,
+    locked = false,
+    scale = 2.0,
     position = {
         a = "CENTER",
         b = "UIParent",
         c = "CENTER",
         x = 0,
-        y = 0,
+        y = -100,
     },
 }
 

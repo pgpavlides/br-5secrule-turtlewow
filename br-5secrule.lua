@@ -63,7 +63,9 @@ br_5secruleFrame:SetBackdrop({
     edgeSize = 16,
     insets = { left = 3, right = 3, top = 3, bottom = 3 }
 })
-br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.8)
+br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.9)
+-- Force frame to be visible
+br_5secruleFrame:Show()
 
 local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", br_5secruleFrame)
 manaBar:SetStatusBarTexture("Interface\TargetingFrame\UI-StatusBar")
