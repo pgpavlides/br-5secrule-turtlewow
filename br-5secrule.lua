@@ -5,7 +5,7 @@
 -- Global addon table
 br_5secrule = {
     lastManaUseTime = 0,
-    mp5Delay = 5,
+    mp5Delay = 5.0,  -- Exact 5.0 seconds for FSR
     previousMana = 0,
     lastTickTime = nil,
     manaTickTimer = 0,
@@ -129,6 +129,11 @@ function br_5secrule:UpdateFSRSpark()
     if now <= fsrEndTime then
         local elapsed = now - self.lastManaUseTime
         local progress = elapsed / self.mp5Delay
+        
+        -- Debug: Print timing info (enable for testing)
+        if math.floor(elapsed * 2) % 2 == 0 then  -- Every 0.5 seconds
+            DEFAULT_CHAT_FRAME:AddMessage(string.format("FSR: %.1fs/%.1fs elapsed, %.0f%% progress", elapsed, self.mp5Delay, progress * 100))
+        end
         
         -- Ensure progress stays between 0 and 1
         progress = math.max(0, math.min(1, progress))
