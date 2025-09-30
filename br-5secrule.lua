@@ -143,7 +143,7 @@ function br_5secrule:UpdateFSRSpark()
         
         -- Position from right to left, keep within bar bounds
         local margin = 10 / frameScale
-        local extraRight = 5 / frameScale  -- Extra distance to reach the end
+        local extraRight = 15 / frameScale  -- Extra distance to reach the end
         local pos = (barWidth - margin + extraRight) * (1 - progress) + (margin/2)
         
         fsrSpark:ClearAllPoints()
@@ -199,7 +199,7 @@ function br_5secrule:UpdateTickSpark()
     
     -- Position from left to right, keep within bar bounds
     local margin = 10 / frameScale
-    local extraRight = 5 / frameScale  -- Extra distance to reach the end
+    local extraRight = 15 / frameScale  -- Extra distance to reach the end
     local pos = (barWidth - margin + extraRight) * progress + (margin/2)
     
     tickSpark:ClearAllPoints()
