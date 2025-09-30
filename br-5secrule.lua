@@ -126,7 +126,8 @@ function br_5secrule:UpdateFSRSpark()
     
     if now < self.lastManaUseTime + self.mp5Delay then
         local progress = (now - self.lastManaUseTime) / self.mp5Delay
-        local pos = barWidth * (1 - progress)
+        -- Constrain FSR spark position to stay within the bar
+        local pos = math.max(10, math.min(barWidth - 10, barWidth * (1 - progress)))
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
         fsrSpark:Show()
@@ -144,22 +145,27 @@ function br_5secrule:UpdateTickSpark()
         return
     end
     
-    if self.tickStartTime then
-        local now = GetTime()
-        local elapsed = now - self.tickStartTime
-        if elapsed <= 2 then
-            local barWidth = manaBar:GetWidth()
-            local progress = elapsed / 2
-            local pos = barWidth * progress
-            tickSpark:ClearAllPoints()
-            tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
-            tickSpark:Show()
-        else
-            tickSpark:Hide()
-        end
-    else
-        tickSpark:Hide()
+    -- Always show tick animation when not in FSR
+    local now = GetTime()
+    if not self.tickStartTime then
+        self.tickStartTime = now
     end
+    
+    local elapsed = now - self.tickStartTime
+    if elapsed >= 2 then
+        -- Reset the cycle every 2 seconds
+        self.tickStartTime = now
+        elapsed = 0
+    end
+    
+    local barWidth = manaBar:GetWidth()
+    local progress = elapsed / 2
+    -- Constrain position to stay within the bar
+    local pos = math.max(10, math.min(barWidth - 10, barWidth * progress))
+    
+    tickSpark:ClearAllPoints()
+    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
+    tickSpark:Show()
 end
 
 -- Update frame visibility and mouse interaction
