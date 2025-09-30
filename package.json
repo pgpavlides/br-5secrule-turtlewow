@@ -1,6 +1,6 @@
 {
   "name": "br-5secrule",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "BR - FiveSecondRule: WoW 1.12 addon for mana regeneration tracking",
   "scripts": {
     "build": "node build.js",
