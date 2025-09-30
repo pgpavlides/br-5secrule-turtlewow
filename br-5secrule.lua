@@ -71,6 +71,9 @@ local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", br_5secruleFrame)
 manaBar:SetStatusBarTexture("Interface\TargetingFrame\UI-StatusBar")
 manaBar:SetStatusBarColor(0, 0, 1, 0.8)
 manaBar:SetAllPoints(br_5secruleFrame)
+-- Initialize with default values for visibility
+manaBar:SetMinMaxValues(0, 100)
+manaBar:SetValue(50)
 -- Ensure mana bar is always visible
 manaBar:Show()
 
@@ -218,10 +221,14 @@ function br_5secrule:OnUpdate()
 
     self:UpdateFSRSpark()
 
-    local currentMana = UnitMana("player")
+    local currentMana = UnitMana("player") or 0
+    local maxMana = UnitManaMax("player") or 100
     local prevMana = self.previousMana
     
-    manaBar:SetMinMaxValues(0, UnitManaMax("player"))
+    -- Ensure minimum values for visibility
+    if maxMana == 0 then maxMana = 100 end
+    
+    manaBar:SetMinMaxValues(0, maxMana)
     manaBar:SetValue(currentMana)
 
 
