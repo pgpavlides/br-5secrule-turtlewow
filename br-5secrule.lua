@@ -122,7 +122,8 @@ end
 -- Update FSR spark position
 function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
-    local barWidth = manaBar:GetWidth()  -- Use actual pixel width, no scale division
+    local frameScale = frame:GetScale()
+    local barWidth = manaBar:GetWidth() / frameScale  -- Account for scale
     local fsrEndTime = self.lastManaUseTime + self.mp5Delay
     
     if now <= fsrEndTime then
@@ -140,8 +141,9 @@ function br_5secrule:UpdateFSRSpark()
         -- Ensure progress stays between 0 and 1
         progress = math.max(0, math.min(1, progress))
         
-        -- Position from right to left, constrained to bar
-        local pos = (barWidth - 10) * (1 - progress) + 5
+        -- Position from right to left, keep within bar bounds
+        local margin = 10 / frameScale
+        local pos = (barWidth - margin) * (1 - progress) + (margin/2)
         
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
@@ -187,14 +189,16 @@ function br_5secrule:UpdateTickSpark()
     -- Ensure elapsed is never negative
     elapsed = math.max(0, elapsed)
     
-    local barWidth = manaBar:GetWidth()  -- Use actual pixel width, no scale division
+    local frameScale = frame:GetScale()
+    local barWidth = manaBar:GetWidth() / frameScale  -- Account for scale
     local progress = elapsed / 2
     
     -- Ensure progress stays between 0 and 1
     progress = math.max(0, math.min(1, progress))
     
-    -- Position from left to right, constrained to bar
-    local pos = (barWidth - 10) * progress + 5
+    -- Position from left to right, keep within bar bounds
+    local margin = 10 / frameScale
+    local pos = (barWidth - margin) * progress + (margin/2)
     
     tickSpark:ClearAllPoints()
     tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
