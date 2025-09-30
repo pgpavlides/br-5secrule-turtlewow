@@ -142,8 +142,10 @@ function br_5secrule:UpdateFSRSpark()
         progress = math.max(0, math.min(1, progress))
         
         -- Position from right to left: start at right (barWidth), end at left (0)
-        local pos = barWidth * (1 - progress)
-        -- Allow full travel from 0 to barWidth
+        -- Account for spark width so it reaches the actual edges
+        local sparkWidth = 20 / frameScale  -- Spark is 20 pixels wide
+        local effectiveWidth = barWidth - sparkWidth
+        local pos = (sparkWidth/2) + (effectiveWidth * (1 - progress))
         pos = math.max(0, math.min(barWidth, pos))
         
         fsrSpark:ClearAllPoints()
@@ -197,9 +199,11 @@ function br_5secrule:UpdateTickSpark()
     -- Ensure progress stays between 0 and 1
     progress = math.max(0, math.min(1, progress))
     
-    -- Position from left to right: start at left (0), end at right (barWidth)  
-    local pos = barWidth * progress
-    -- Allow full travel from 0 to barWidth
+    -- Position from left to right: start at left (0), end at right (barWidth)
+    -- Account for spark width so it reaches the actual edges
+    local sparkWidth = 20 / frameScale  -- Spark is 20 pixels wide
+    local effectiveWidth = barWidth - sparkWidth
+    local pos = (sparkWidth/2) + (effectiveWidth * progress)
     pos = math.max(0, math.min(barWidth, pos))
     
     tickSpark:ClearAllPoints()
