@@ -1,0 +1,33 @@
+{
+  "name": "br-5secrule",
+  "version": "1.0.0",
+  "description": "BR - FiveSecondRule: WoW 1.12 addon for mana regeneration tracking",
+  "scripts": {
+    "build": "node build.js",
+    "package": "npm run build",
+    "clean": "rimraf dist/ *.zip"
+  },
+  "keywords": [
+    "wow",
+    "world-of-warcraft",
+    "addon",
+    "vanilla",
+    "turtlewow",
+    "mana",
+    "five-second-rule"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "archiver": "^6.0.1",
+    "rimraf": "^5.0.5"
+  },
+  "files": [
+    "*.lua",
+    "*.toc",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

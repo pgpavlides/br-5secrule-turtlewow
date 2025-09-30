@@ -54,6 +54,7 @@ br_5secruleFrame:SetScript("OnDragStop", function()
     br_5secrule_Settings.position.a, _, br_5secrule_Settings.position.c, br_5secrule_Settings.position.x, br_5secrule_Settings.position.y = br_5secruleFrame:GetPoint()
 end)
 
+-- Always show frame background for visibility
 br_5secruleFrame:SetBackdrop({
     bgFile = "Interface\ChatFrame\ChatFrameBackground",
     edgeFile = "Interface\DialogFrame\UI-DialogBox-Border",
@@ -62,12 +63,14 @@ br_5secruleFrame:SetBackdrop({
     edgeSize = 16,
     insets = { left = 3, right = 3, top = 3, bottom = 3 }
 })
-br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.5)
+br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.8)
 
 local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", br_5secruleFrame)
 manaBar:SetStatusBarTexture("Interface\TargetingFrame\UI-StatusBar")
-manaBar:SetStatusBarColor(0, 0, 1, 0.5)
+manaBar:SetStatusBarColor(0, 0, 1, 0.8)
 manaBar:SetAllPoints(br_5secruleFrame)
+-- Ensure mana bar is always visible
+manaBar:Show()
 
 -----------------------------------------------------------
 -- FSRSpark: The 5-second countdown spark
@@ -180,10 +183,21 @@ end
 -- OnUpdate:
 -- Main update function which detects mana consumption and regeneration.
 function br_5secrule:OnUpdate()
+    -- Always keep frame visible, only change mouse interaction
     if br_5secrule_Settings.locked then
-        br_5secruleFrame:SetBackdrop(nil)
+        -- Keep backdrop visible but reduce border visibility when locked
+        br_5secruleFrame:SetBackdrop({
+            bgFile = "Interface\ChatFrame\ChatFrameBackground",
+            edgeFile = nil,  -- Remove border when locked
+            tile = true,
+            tileSize = 16,
+            edgeSize = 0,
+            insets = { left = 1, right = 1, top = 1, bottom = 1 }
+        })
+        br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.6)
         br_5secruleFrame:EnableMouse(false)
     else
+        -- Full backdrop with border when unlocked for easier positioning
         br_5secruleFrame:SetBackdrop({
             bgFile = "Interface\ChatFrame\ChatFrameBackground",
             edgeFile = "Interface\DialogFrame\UI-DialogBox-Border",
@@ -192,9 +206,13 @@ function br_5secrule:OnUpdate()
             edgeSize = 16,
             insets = { left = 3, right = 3, top = 3, bottom = 3 }
         })
-        br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.5)
+        br_5secruleFrame:SetBackdropColor(0, 0, 0, 0.8)
         br_5secruleFrame:EnableMouse(true)
     end
+    
+    -- Ensure frame and mana bar are always visible
+    br_5secruleFrame:Show()
+    manaBar:Show()
 
     self:UpdateFSRSpark()
 

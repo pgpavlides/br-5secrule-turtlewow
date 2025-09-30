@@ -1,30 +1,48 @@
-# FiveSecondRule
-A Turtle WoW addon for mana classes that tracks the five-second rule (FSR or 5SR), mana ticks (MP5), mana consumption, and mana gains.
+# BR - FiveSecondRule
 
-This is a simple, lightweight, and elegant addon for TurtleWoW that tracks the "five-second rule" countdown, "ticks", mana gained and mana consumed. A small vertical line, or "spark", moves horizontally across the mana bar. When moving right-to-left, it is counting down the "five-second rule". When moving left-to-right, it times each "tick". Any mana consumed or gained is displayed to the right of the mana bar and fades out, similar to floating combat text.
+A custom World of Warcraft 1.12 (Vanilla/TurtleWoW) addon that provides visual tracking for mana regeneration mechanics, including the five-second rule, mana ticks, and mana consumption/regeneration.
 
-<h4>Features</h4>
+## Commands
 
-- Tracks the "five-second-rule"* (FSR or 5SR) countdown as movement right-to-left
-- Tracks mana "ticks"** as movement left-to-right
-- Displays any mana gains as light blue text to the right of the mana bar as "+50"
-- Displays any mana consumption as deep purple text to the right of the mana bar as "-50"
-- Simple, lightweight, elegant, and compatible with the default UI
-- Compatible with [TheLinuxITGuy](https://github.com/TheLinuxITGuy)'s beautiful [Turtle Dragonflight UI](https://github.com/TheLinuxITGuy/Turtle-Dragonflight)
+| Command | Description |
+|---------|-------------|
+| `/br5` or `/br5secrule` | Show help and available commands |
+| `/br5 stats` | Print character spirit information |
+| `/br5 color manaloss RRGGBB` | Change mana loss text color (hex format) |
+| `/br5 color managain RRGGBB` | Change mana gain text color (hex format) |
+| `/br5 text on\|off` | Enable/disable mana change text |
+| `/br5 lock` | Toggle frame lock/unlock |
+| `/br5 scale <number>` | Set frame scale (e.g., 1.5 for 150%) |
+| `/br5 reset` | Reset to default settings |
 
-<h4>Acknowledgements</h4>
 
-- Concept taken from [FiveSecondRule](https://github.com/smp4903/FiveSecondRule) by [smp4903](https://github.com/smp4903), but all code is my own
+## Build Process
 
-<h4>Known-Issues/ToDo</h4>
+To package the addon for distribution:
 
-- Thorough testing across all classes still needed.
-- Extend the addon to support Rage and Energy timings.
+```bash
+npm install
+npm run build
+```
 
-Updated, uploaded, and maintained by [StormtrooperTK421](https://discordapp.com/users/237746068844969994) on [GitHub](https://github.com/DustinChecketts/FiveSecondRule).
-Please submit issues and I'll do my best to troubleshoot, replicate, and resolve issues as my limited abilities allow.
+This creates a zip file in the `dist/` folder containing only the files needed for WoW.
 
-<h4>Vocabulary</h4>
+### Project Structure
+- `br-5secrule.lua` - Main addon logic and UI framework
+- `br-5secrule_Settings.lua` - Configuration and saved variables
+- `br-5secrule_Utils.lua` - Utility functions and helpers
+- `br-5secrule_Cmd.lua` - Slash command implementations
+- `br-5secrule.toc` - Addon metadata and load order
 
-- *The "five-second-rule" refers to the necessary time to elapse after spending mana before mana regeneration will resume.
-- **A "tick" is a measure of time used for over-time effects. Mana regeneration uses 2-second "ticks".
+
+### Five-Second Rule Explained
+The "five-second rule" is a core Vanilla WoW mechanic where mana regeneration is paused for 5 seconds after any mana-consuming action. This addon provides precise visual feedback for this timing.
+
+### Mana Tick Cycles
+Mana regeneration occurs in 2-second intervals ("ticks") when not affected by the five-second rule. The addon shows these cycles with a left-to-right animation.
+
+---
+
+**Version**: 1.0.0  
+**Target**: World of Warcraft 1.12 / TurtleWoW  
+**License**: MIT (see LICENSE file)

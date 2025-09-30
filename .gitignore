@@ -1,0 +1,70 @@
+# World of Warcraft Addon .gitignore
+
+# WoW Client Generated Files
+*.bak
+*.tmp
+*.temp
+
+# SavedVariables (user-specific settings)
+WTF/
+SavedVariables/
+*.lua.bak
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Linux
+*~
+.nfs*
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+error.txt
+debug.txt
+
+# Archive files
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# Development files
+node_modules/
+.env
+.env.local
+CLAUDE.md
+
+# Build artifacts
+dist/
+*.zip
+package-lock.json
+
+# NPM debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Backup files created by editors
+*~
+*.orig
+*.rej
+
+# Local configuration
+config.local.*
+settings.local.*
