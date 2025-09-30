@@ -130,20 +130,21 @@ function br_5secrule:UpdateFSRSpark()
         local elapsed = now - self.lastManaUseTime
         local progress = elapsed / self.mp5Delay
         
-        -- Debug: Print timing info (enable for testing)
-        if elapsed > 0 then
-            local timeCheck = math.floor(elapsed * 2)
-            if math.mod(timeCheck, 1) == 0 then  -- Every 0.5 seconds
-                DEFAULT_CHAT_FRAME:AddMessage("FSR: " .. elapsed .. "s elapsed, " .. (progress * 100) .. " percent progress")
-            end
-        end
+        -- Debug: Uncomment for testing timing
+        -- if elapsed > 0 then
+        --     local timeCheck = math.floor(elapsed * 2)
+        --     if math.mod(timeCheck, 1) == 0 then
+        --         DEFAULT_CHAT_FRAME:AddMessage("FSR: " .. elapsed .. "s elapsed, " .. (progress * 100) .. " percent progress")
+        --     end
+        -- end
         
         -- Ensure progress stays between 0 and 1
         progress = math.max(0, math.min(1, progress))
         
         -- Position from right to left: start at right (barWidth), end at left (0)
         local pos = barWidth * (1 - progress)
-        pos = math.max(4/frameScale, math.min(barWidth, pos))
+        -- Allow full travel from 0 to barWidth
+        pos = math.max(0, math.min(barWidth, pos))
         
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
@@ -196,9 +197,10 @@ function br_5secrule:UpdateTickSpark()
     -- Ensure progress stays between 0 and 1
     progress = math.max(0, math.min(1, progress))
     
-    -- Position from left to right: start at left (0), end at right (barWidth)
+    -- Position from left to right: start at left (0), end at right (barWidth)  
     local pos = barWidth * progress
-    pos = math.max(4/frameScale, math.min(barWidth, pos))
+    -- Allow full travel from 0 to barWidth
+    pos = math.max(0, math.min(barWidth, pos))
     
     tickSpark:ClearAllPoints()
     tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
