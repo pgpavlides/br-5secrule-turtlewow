@@ -50,9 +50,10 @@ frame:SetBackdrop({
 frame:SetBackdropColor(0, 0, 0, 0.8)
 frame:SetBackdropBorderColor(0.8, 0.8, 0.8, 0.8)
 
--- Status bar for mana (fill the entire frame)
+-- Status bar for mana
 local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", frame)
-manaBar:SetAllPoints(frame)
+manaBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
+manaBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
 manaBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
 manaBar:SetStatusBarColor(0.2, 0.4, 1.0, 0.8)
 manaBar:SetMinMaxValues(0, 100)
@@ -139,8 +140,8 @@ function br_5secrule:UpdateFSRSpark()
         -- Ensure progress stays between 0 and 1
         progress = math.max(0, math.min(1, progress))
         
-        -- Position from right to left: start at right (barWidth), end at left (0)
-        local pos = barWidth * (1 - progress)
+        -- Position from right to left, constrained to bar
+        local pos = (barWidth - 10) * (1 - progress) + 5
         
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
@@ -192,8 +193,8 @@ function br_5secrule:UpdateTickSpark()
     -- Ensure progress stays between 0 and 1
     progress = math.max(0, math.min(1, progress))
     
-    -- Position from left to right: start at left (0), end at right (barWidth)
-    local pos = barWidth * progress
+    -- Position from left to right, constrained to bar
+    local pos = (barWidth - 10) * progress + 5
     
     tickSpark:ClearAllPoints()
     tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
