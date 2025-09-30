@@ -50,10 +50,9 @@ frame:SetBackdrop({
 frame:SetBackdropColor(0, 0, 0, 0.8)
 frame:SetBackdropBorderColor(0.8, 0.8, 0.8, 0.8)
 
--- Status bar for mana
+-- Status bar for mana (fill the entire frame)
 local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", frame)
-manaBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 14, -4)
-manaBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 4)
+manaBar:SetAllPoints(frame)
 manaBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
 manaBar:SetStatusBarColor(0.2, 0.4, 1.0, 0.8)
 manaBar:SetMinMaxValues(0, 100)
@@ -122,8 +121,7 @@ end
 -- Update FSR spark position
 function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
-    local frameScale = frame:GetScale()
-    local barWidth = manaBar:GetWidth() / frameScale  -- Use full bar width
+    local barWidth = manaBar:GetWidth()  -- Use actual pixel width, no scale division
     local fsrEndTime = self.lastManaUseTime + self.mp5Delay
     
     if now <= fsrEndTime then
@@ -188,8 +186,7 @@ function br_5secrule:UpdateTickSpark()
     -- Ensure elapsed is never negative
     elapsed = math.max(0, elapsed)
     
-    local frameScale = frame:GetScale()
-    local barWidth = manaBar:GetWidth() / frameScale  -- Use full bar width
+    local barWidth = manaBar:GetWidth()  -- Use actual pixel width, no scale division
     local progress = elapsed / 2
     
     -- Ensure progress stays between 0 and 1
