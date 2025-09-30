@@ -122,16 +122,20 @@ end
 -- Update FSR spark position
 function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
-    local barWidth = manaBar:GetWidth()
+    local barWidth = manaBar:GetWidth() - 8  -- Account for bar padding
     
     if now < self.lastManaUseTime + self.mp5Delay then
         local progress = (now - self.lastManaUseTime) / self.mp5Delay
-        -- Constrain FSR spark position to stay within the bar
-        local pos = math.max(10, math.min(barWidth - 10, barWidth * (1 - progress)))
+        -- Position from right to left, staying within bounds
+        local pos = math.max(4, math.min(barWidth, barWidth * (1 - progress)))
         fsrSpark:ClearAllPoints()
-        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
+        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + 4, 0)
         fsrSpark:Show()
         tickSpark:Hide()
+        -- Reset tick timing when FSR ends
+        if progress >= 0.99 then
+            self.tickStartTime = now + 0.1  -- Start tick cycle right after FSR
+        end
     else
         fsrSpark:Hide()
         self:UpdateTickSpark()
@@ -145,26 +149,30 @@ function br_5secrule:UpdateTickSpark()
         return
     end
     
-    -- Always show tick animation when not in FSR
     local now = GetTime()
-    if not self.tickStartTime then
+    
+    -- Initialize tick timing if not set or if FSR just ended
+    if not self.tickStartTime or self.tickStartTime > now then
         self.tickStartTime = now
     end
     
     local elapsed = now - self.tickStartTime
+    
+    -- Continuous 2-second cycles for mana tick timing
     if elapsed >= 2 then
-        -- Reset the cycle every 2 seconds
-        self.tickStartTime = now
-        elapsed = 0
+        -- Seamless restart of cycle
+        self.tickStartTime = self.tickStartTime + 2
+        elapsed = now - self.tickStartTime
     end
     
-    local barWidth = manaBar:GetWidth()
+    local barWidth = manaBar:GetWidth() - 8  -- Account for bar padding
     local progress = elapsed / 2
-    -- Constrain position to stay within the bar
-    local pos = math.max(10, math.min(barWidth - 10, barWidth * progress))
+    
+    -- Position from left to right, staying within bounds
+    local pos = math.max(4, math.min(barWidth, barWidth * progress))
     
     tickSpark:ClearAllPoints()
-    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
+    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + 4, 0)
     tickSpark:Show()
 end
 
@@ -243,9 +251,10 @@ function br_5secrule:OnUpdate()
             self.fadeTimer = now
         end
         
-        -- Start tick animation if this looks like a real tick
-        if manaGained >= (0.9 * expectedGain) then
-            self.tickStartTime = now
+        -- Synchronize tick animation with actual mana gains
+        if manaGained >= (0.5 * expectedGain) then
+            -- Align tick timing with actual mana regeneration
+            self.tickStartTime = now - 0.1  -- Start slightly before to show the gain
         end
         
         self.lastTickTime = now
