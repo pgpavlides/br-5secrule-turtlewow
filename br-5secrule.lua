@@ -52,8 +52,8 @@ frame:SetBackdropBorderColor(0.8, 0.8, 0.8, 0.8)
 
 -- Status bar for mana
 local manaBar = CreateFrame("StatusBar", "br_5secruleManaBar", frame)
-manaBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 4, -4)
-manaBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -4, 4)
+manaBar:SetPoint("TOPLEFT", frame, "TOPLEFT", 14, -4)
+manaBar:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -14, 4)
 manaBar:SetStatusBarTexture("Interface\\TargetingFrame\\UI-StatusBar")
 manaBar:SetStatusBarColor(0.2, 0.4, 1.0, 0.8)
 manaBar:SetMinMaxValues(0, 100)
@@ -142,11 +142,7 @@ function br_5secrule:UpdateFSRSpark()
         progress = math.max(0, math.min(1, progress))
         
         -- Position from right to left: start at right (barWidth), end at left (0)
-        -- Account for spark width so it reaches the actual edges
-        local sparkWidth = 20 / frameScale  -- Spark is 20 pixels wide
-        local effectiveWidth = barWidth - sparkWidth
-        local pos = (sparkWidth/2) + (effectiveWidth * (1 - progress))
-        pos = math.max(0, math.min(barWidth, pos))
+        local pos = barWidth * (1 - progress)
         
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
@@ -200,11 +196,7 @@ function br_5secrule:UpdateTickSpark()
     progress = math.max(0, math.min(1, progress))
     
     -- Position from left to right: start at left (0), end at right (barWidth)
-    -- Account for spark width so it reaches the actual edges
-    local sparkWidth = 20 / frameScale  -- Spark is 20 pixels wide
-    local effectiveWidth = barWidth - sparkWidth
-    local pos = (sparkWidth/2) + (effectiveWidth * progress)
-    pos = math.max(0, math.min(barWidth, pos))
+    local pos = barWidth * progress
     
     tickSpark:ClearAllPoints()
     tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
