@@ -1,4 +1,4 @@
--- br-5secrule v0.0.2
+-- br-5secrule v0.0.3
 -- Minimal addon for WoW 1.12 to track mana usage, mana regeneration, and mana ticks.
 -- Rewritten for better Vanilla WoW compatibility
 
@@ -122,14 +122,15 @@ end
 -- Update FSR spark position
 function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
-    local barWidth = manaBar:GetWidth() - 8  -- Account for bar padding
+    local frameScale = frame:GetScale()
+    local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
     
     if now < self.lastManaUseTime + self.mp5Delay then
         local progress = (now - self.lastManaUseTime) / self.mp5Delay
         -- Position from right to left, staying within bounds
-        local pos = math.max(4, math.min(barWidth, barWidth * (1 - progress)))
+        local pos = math.max(4/frameScale, math.min(barWidth, barWidth * (1 - progress)))
         fsrSpark:ClearAllPoints()
-        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + 4, 0)
+        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
         fsrSpark:Show()
         tickSpark:Hide()
         -- Reset tick timing when FSR ends
@@ -165,14 +166,15 @@ function br_5secrule:UpdateTickSpark()
         elapsed = now - self.tickStartTime
     end
     
-    local barWidth = manaBar:GetWidth() - 8  -- Account for bar padding
+    local frameScale = frame:GetScale()
+    local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
     local progress = elapsed / 2
     
     -- Position from left to right, staying within bounds
-    local pos = math.max(4, math.min(barWidth, barWidth * progress))
+    local pos = math.max(4/frameScale, math.min(barWidth, barWidth * progress))
     
     tickSpark:ClearAllPoints()
-    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + 4, 0)
+    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
     tickSpark:Show()
 end
 

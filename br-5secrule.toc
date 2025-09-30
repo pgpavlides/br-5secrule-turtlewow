@@ -1,6 +1,6 @@
 ## Interface: 11200
 ## Title: |cff00ff00🥦 BR|r - FiveSecondRule |cff7fff7f TurtleWOW|r
-## Version: 0.0.3
+## Version: 0.0.5
 ## Author: BR Development
 ## Notes: |cff00ff00Five-second rule (FSR), mana tick (MP5), and mana gain tracking|r
 ## SavedVariables:
