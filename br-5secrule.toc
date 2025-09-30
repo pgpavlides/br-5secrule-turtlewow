@@ -1,12 +1,12 @@
 ## Interface: 11200
-## Title: FiveSecondRule
+## Title: |cff00ff00🥦 BR|r - FiveSecondRule |cff7fff7f TurtleWOW|r
 ## Version: 1.0.0
-## Author: StormtrooperTK421
-## Notes: Five-second rule (FSR), mana tick (MP5), and mana gain tracking
+## Author: BR Development
+## Notes: |cff00ff00Five-second rule (FSR), mana tick (MP5), and mana gain tracking|r
 ## SavedVariables:
 ## SavedVariablesPerCharacter: FiveSecondRule_Settings
 
-FiveSecondRule_Utils.lua
-FiveSecondRule_Settings.lua
-FiveSecondRule.lua
+br-5secrule_Utils.lua
+br-5secrule_Settings.lua
+br-5secrule.lua
 br-5secrule_Cmd.lua
