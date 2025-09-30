@@ -1,4 +1,4 @@
--- br-5secrule v0.0.3
+-- br-5secrule v0.0.5
 -- Minimal addon for WoW 1.12 to track mana usage, mana regeneration, and mana ticks.
 -- Rewritten for better Vanilla WoW compatibility
 
@@ -124,21 +124,34 @@ function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
     local frameScale = frame:GetScale()
     local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
+    local fsrEndTime = self.lastManaUseTime + self.mp5Delay
     
-    if now < self.lastManaUseTime + self.mp5Delay then
-        local progress = (now - self.lastManaUseTime) / self.mp5Delay
-        -- Position from right to left, staying within bounds
-        local pos = math.max(4/frameScale, math.min(barWidth, barWidth * (1 - progress)))
+    if now <= fsrEndTime then
+        local elapsed = now - self.lastManaUseTime
+        local progress = elapsed / self.mp5Delay
+        
+        -- Ensure progress stays between 0 and 1
+        progress = math.max(0, math.min(1, progress))
+        
+        -- Position from right to left: start at right (barWidth), end at left (0)
+        local pos = barWidth * (1 - progress)
+        pos = math.max(4/frameScale, math.min(barWidth, pos))
+        
         fsrSpark:ClearAllPoints()
         fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
         fsrSpark:Show()
         tickSpark:Hide()
-        -- Reset tick timing when FSR ends
-        if progress >= 0.99 then
-            self.tickStartTime = now + 0.1  -- Start tick cycle right after FSR
+        
+        -- Prepare tick timing to start exactly when FSR ends
+        if progress >= 0.98 then
+            self.tickStartTime = fsrEndTime
         end
     else
         fsrSpark:Hide()
+        -- Ensure tick starts exactly when FSR ends
+        if not self.tickStartTime or self.tickStartTime < fsrEndTime then
+            self.tickStartTime = fsrEndTime
+        end
         self:UpdateTickSpark()
     end
 end
@@ -152,26 +165,32 @@ function br_5secrule:UpdateTickSpark()
     
     local now = GetTime()
     
-    -- Initialize tick timing if not set or if FSR just ended
-    if not self.tickStartTime or self.tickStartTime > now then
+    -- Initialize tick timing if not set
+    if not self.tickStartTime then
         self.tickStartTime = now
     end
     
     local elapsed = now - self.tickStartTime
     
-    -- Continuous 2-second cycles for mana tick timing
-    if elapsed >= 2 then
-        -- Seamless restart of cycle
+    -- Handle 2-second tick cycles precisely
+    while elapsed >= 2 do
         self.tickStartTime = self.tickStartTime + 2
-        elapsed = now - self.tickStartTime
+        elapsed = elapsed - 2
     end
+    
+    -- Ensure elapsed is never negative
+    elapsed = math.max(0, elapsed)
     
     local frameScale = frame:GetScale()
     local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
     local progress = elapsed / 2
     
-    -- Position from left to right, staying within bounds
-    local pos = math.max(4/frameScale, math.min(barWidth, barWidth * progress))
+    -- Ensure progress stays between 0 and 1
+    progress = math.max(0, math.min(1, progress))
+    
+    -- Position from left to right: start at left (0), end at right (barWidth)
+    local pos = barWidth * progress
+    pos = math.max(4/frameScale, math.min(barWidth, pos))
     
     tickSpark:ClearAllPoints()
     tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
