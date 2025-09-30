@@ -123,7 +123,7 @@ end
 function br_5secrule:UpdateFSRSpark()
     local now = GetTime()
     local frameScale = frame:GetScale()
-    local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
+    local barWidth = manaBar:GetWidth() / frameScale  -- Use full bar width
     local fsrEndTime = self.lastManaUseTime + self.mp5Delay
     
     if now <= fsrEndTime then
@@ -147,7 +147,7 @@ function br_5secrule:UpdateFSRSpark()
         pos = math.max(0, math.min(barWidth, pos))
         
         fsrSpark:ClearAllPoints()
-        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
+        fsrSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
         fsrSpark:Show()
         tickSpark:Hide()
         
@@ -191,7 +191,7 @@ function br_5secrule:UpdateTickSpark()
     elapsed = math.max(0, elapsed)
     
     local frameScale = frame:GetScale()
-    local barWidth = (manaBar:GetWidth() - 8) / frameScale  -- Account for scale and padding
+    local barWidth = manaBar:GetWidth() / frameScale  -- Use full bar width
     local progress = elapsed / 2
     
     -- Ensure progress stays between 0 and 1
@@ -203,7 +203,7 @@ function br_5secrule:UpdateTickSpark()
     pos = math.max(0, math.min(barWidth, pos))
     
     tickSpark:ClearAllPoints()
-    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos + (4/frameScale), 0)
+    tickSpark:SetPoint("CENTER", manaBar, "LEFT", pos, 0)
     tickSpark:Show()
 end
 
